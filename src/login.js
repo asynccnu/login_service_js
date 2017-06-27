@@ -37,7 +37,7 @@ app.use(async function(ctx, next) {
                 ctx.status = 403
             }
             console.log('__cookies:', __cookies)
-            let ___cookies = await ticket_login(__cookies, "GET", ticket_url2)
+            let ___cookies = await ticket_login(__cookies, "POST", ticket_url2)
             if (___cookies == undefined) {
                 ctx.status = 403
             }
@@ -54,7 +54,7 @@ app.use(async function(ctx, next) {
 })
 
 // info login spider
-function info_login(sid, pwd) {
+async function info_login(sid, pwd) {
     var config = {
         headers: {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
@@ -78,7 +78,7 @@ function info_login(sid, pwd) {
     })
 }
 
-function link_login(cookies) {
+async function link_login(cookies) {
     JSSESIONID = cookies[0].split(';')[0]
     BIGipServerpool_jwc_xk = cookies[1].split(';')[0]
     request_cookies = JSSESIONID + ';' + BIGipServerpool_jwc_xk
@@ -98,7 +98,7 @@ function link_login(cookies) {
     })
 }
 
-function ticket_login(cookies, method, ticket_url) {
+async function ticket_login(cookies, method, ticket_url) {
     JSSESIONID = cookies[0].split(';')[0]
     BIGipServerpool_jwc_xk = cookies[1].split(';')[0]
     request_cookies = JSSESIONID + ';' + BIGipServerpool_jwc_xk
