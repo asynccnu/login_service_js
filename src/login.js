@@ -21,7 +21,7 @@ app.use(async function(ctx, next) {
         if (authH == undefined) {
             ctx.status = 401
         } else {
-            let authS = Buffer.from(authH.slice(6,), 'base64').toString()
+            let authS = Buffer.from(authH.slice(6), 'base64').toString()
             let sid = authS.split(':')[0]
             let pwd = authS.split(':')[1]
 

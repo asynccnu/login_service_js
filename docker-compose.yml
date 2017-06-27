@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+
+    login_api:
+        build: .
+        env_file:
+            - container.env
+        command: node src/login.js
+        ports:
+            - "3000:3000"
