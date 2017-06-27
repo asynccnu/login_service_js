@@ -36,6 +36,7 @@ app.use(async function(ctx, next) {
                 let ___cookies = await ticket_login(__cookies)
                 if (__cookies != undefined) {
                     ctx.cookies = ___cookies[0] + ';' +  __cookies[1]
+                    ctx.sid = sid
                 }
             }
             await next(ctx)
@@ -150,7 +151,8 @@ async function info_login_api(ctx) {
     let BIGipServerpool_jwc_xk = ctx.cookies.split(';')[2].split('=')[1]
     ctx.type = 'json'
     if (ctx.cookies != undefined) {
-        ctx.body = '{"JSSESIONID":"'+JSSESIONID+'",'+'"BIGipServerpool_jwc_xk":"'+BIGipServerpool_jwc_xk+'"}'
+        ctx.body = '{"JSSESIONID":"'+JSSESIONID+'",'+'"BIGipServerpool_jwc_xk":"'+BIGipServerpool_jwc_xk + '", "sid":"' + ctx.sid + '"}'
+                    
     } else {
         ctx.body = '{}'
     }
