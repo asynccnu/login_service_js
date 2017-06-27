@@ -28,16 +28,16 @@ app.use(async function(ctx, next) {
             let _cookies = await info_login(sid, pwd)
             if (_cookies == undefined) {
                 ctx.status = 403
+            } else {
+                ctx.status = 200
             }
             let __cookies = await link_login(_cookies)
-            if (__cookies == undefined) {
-                ctx.status = 403
+            if (__cookies != undefined) {
+                let ___cookies = await ticket_login(__cookies)
+                if (__cookies != undefined) {
+                    ctx.cookies = ___cookies[0] + ';' +  __cookies[1]
+                }
             }
-            let ___cookies = await ticket_login(__cookies)
-            if (___cookies == undefined) {
-                ctx.status = 403
-            }
-            ctx.cookies = ___cookies[0] + ';' +  __cookies[1]
             await next(ctx)
         }
     } catch (err) {
@@ -149,7 +149,11 @@ async function info_login_api(ctx) {
     let JSSESIONID = ctx.cookies.split(';')[0].split('=')[1]
     let BIGipServerpool_jwc_xk = ctx.cookies.split(';')[2].split('=')[1]
     ctx.type = 'json'
-    ctx.body = '{"JSSESIONID":"'+JSSESIONID+'",'+'"BIGipServerpool_jwc_xk":"'+BIGipServerpool_jwc_xk+'"}'
+    if (ctx.cookies != undefined) {
+        ctx.body = '{"JSSESIONID":"'+JSSESIONID+'",'+'"BIGipServerpool_jwc_xk":"'+BIGipServerpool_jwc_xk+'"}'
+    } else {
+        ctx.body = '{}'
+    }
 }
 
 app.use(router.routes(), router.allowedMethods());
